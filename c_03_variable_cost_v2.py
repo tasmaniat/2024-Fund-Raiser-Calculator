@@ -35,8 +35,9 @@ def not_blank(question, error):
 def currency(x):
     return "${:.2f}".format(x)
 
+
 # Gets expenses, returns list which has
-# the data frame and sub total
+# the data frame and sub_total
 def get_expenses(var_fixed):
     #  set up dictionaries and lists
 
@@ -62,10 +63,13 @@ def get_expenses(var_fixed):
         if item_name.lower() == "xxx":
             break
 
-        quantity = num_check("Quantity:",
-                             "The amount must be a whole number"
-                             "more than zero",
-                             int)
+        if var_fixed == "variable":
+            quantity = num_check("Quantity:",
+                                 "The amount must be a whole number"
+                                 "more than zero",
+                                 int)
+        else:
+            quantity = 1
 
         price = num_check("How much for a single item? $",
                           "The price must be a number <more "
@@ -81,7 +85,7 @@ def get_expenses(var_fixed):
 
     # Calculate cost of each component
     expense_frame['Cost'] = expense_frame['Quantity'] \
-                             * expense_frame['Price']
+                            * expense_frame['Price']
 
     # Find sub_total
     sub_total = expense_frame['Cost'].sum()
@@ -97,16 +101,16 @@ def get_expenses(var_fixed):
 # ******* main routine goes here *******
 
 # Get user data
-product_name = not_blank("Product name: ",
-                         "The product name can't be blank. ")
-variable_expenses = get_expenses("variable")
-variable_frame = variable_expenses[0]
-variable_sub = variable_expenses[1]
+# product_name = not_blank("Product name: ","The product name can't be blank. ")
+
+fixed_expenses = get_expenses("fixed")
+fixed_frame = fixed_expenses[0]
+fixed_sub = fixed_expenses[1]
 
 # ***** Printing Area *****
 
 print()
-print(variable_frame)
+print(fixed_frame[['Cost']])
 print()
 
-print("Variable Costs: ${:.2f}".format(variable_sub))
+print("Fixed Costs: ${:.2f}".format(fixed_sub))
