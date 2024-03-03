@@ -95,7 +95,7 @@ def get_expenses(var_fixed):
     for item in add_dollars:
         expense_frame[item] = expense_frame[item].apply(currency)
 
-    return print(expense_frame, sub_total)
+    return [expense_frame, sub_total]
 
 
 # ******* main routine goes here *******
