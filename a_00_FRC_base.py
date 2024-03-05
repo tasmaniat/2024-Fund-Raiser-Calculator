@@ -103,8 +103,7 @@ def get_expenses(var_fixed):
     expense_frame = expense_frame.set_index('Item')
 
     # Calculate cost of each component
-    expense_frame['Cost'] = expense_frame['Quantity'] \
-                            * expense_frame['Price']
+    expense_frame['Cost'] = expense_frame['Quantity'] * expense_frame['Price']
 
     # Find sub_total
     sub_total = expense_frame['Cost'].sum()
@@ -129,6 +128,7 @@ def expense_print(heading, frame, subtotal):
 # ******* main routine goes here *******
 # Get user data
 product_name = not_blank("Product name: ", "The product name can't be blank. ")
+
 print()
 print("Please enter your variable costs below...")
 # get variable costs
@@ -145,6 +145,7 @@ if have_fixed == "yes":
     fixed_sub = fixed_expenses[1]
 else:
     fixed_sub = 0
+    fixed_frame = ""
 
 # ***** Printing Area *****
 
@@ -154,4 +155,4 @@ print()
 expense_print("Variable", variable_frame, variable_sub)
 
 if have_fixed == "yes":
-    expense_print("Fixed", fixed_frame[['Cost']], fixed_sub)
+    expense_print("Fixed", fixed_frame, fixed_sub)
