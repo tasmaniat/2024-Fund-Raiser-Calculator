@@ -78,3 +78,14 @@ def profit_goal(total_costs):
         else:
             goal = (amount / 100) * total_costs
             return goal
+
+
+# Main Routine goes here
+all_costs = 200
+
+# loop for quick testing...
+for item in range(0, 6):
+    profit_target = profit_goal(all_costs)
+    print("Profit Target: ${:.2f}".format(profit_target))
+    print("Total Sales: ${:.2f}".format(all_costs + profit_target))
+    print()
