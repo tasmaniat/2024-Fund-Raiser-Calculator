@@ -15,6 +15,7 @@ def yes_no(question):
             print("please answer yes / no")
 
 
+# work out profit goal and total sales required
 def profit_goal(total_costs):
     error = "Please enter a valid profit goal\n"
 
