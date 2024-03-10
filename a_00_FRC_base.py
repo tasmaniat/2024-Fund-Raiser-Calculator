@@ -1,5 +1,7 @@
 # import libraries
 import pandas
+import math
+from datetime import date
 
 
 # Functions go here
@@ -34,7 +36,7 @@ def yes_no(question):
             return "no"
 
         else:
-            print("please answer yes / no")
+            print("Please answer either yes or no...")
 
 
 # checks that user response is not blank
@@ -191,9 +193,48 @@ def profit_goal(total_costs):
             return goal
 
 
+# rounding function
+def round_up(amount, round_to):
+    return int(math.ceil(amount / round_to)) * round_to
+
+
+# Display instructions
+def show_instructions():
+    print('''\n
+    ***** Instructions *****
+
+    This program will ask you for...
+    - The name of hte product you are selling
+    - How many items you plan on selling
+    - The costs for each component of the product
+    - How much money you want to make
+
+    It will then output an itemised list of the costs
+    with subtotals for the variable and fixed costs.
+    Finally it will tell you how mush you should sell
+    each item for to reach you profit gaol.
+
+    The data will also be written to a text file which ''')
+
+
 # ******* main routine goes here *******
+
+# Main Routine goes here...
+played_before = yes_no("Have you used this program before? ")
+
+if played_before == "no":
+    show_instructions()
+print()
+
+print("***** Program Launched! *****")
+
+print()
 # Get user data
-product_name = not_blank("Product name: ", "The product name can't be blank. ")
+product_name = not_blank("Product name: ", "The product name can't be blank.")
+
+how_many = num_check("How many items will you be producing? ",
+                     "The number of items must be a whole "
+                     "number more than zero", int)
 
 print()
 print("Please enter your variable costs below...")
@@ -217,8 +258,19 @@ else:
 all_costs = variable_sub + fixed_sub
 profit_target = profit_goal(all_costs)
 
+# calculate total sales needed to reach goal
+sales_needed = all_costs + profit_target
+
+# ASk user for rounding
+round_to = num_check("Round to nearst...? $",
+                     "Can't be 0", int)
+
 # Calculate recommended price
-selling_price = 0
+selling_price = sales_needed / how_many
+print("Selling price (unrounded): "
+      "${:.2f}".format(selling_price))
+
+recommended_price = round_up(selling_price, round_to)
 
 # ***** Printing Area *****
 
@@ -231,7 +283,7 @@ if have_fixed == "yes":
     expense_print("Fixed", fixed_frame, fixed_sub)
 
 print()
-print("**** Total costs: @{:.2f} ****".format(all_costs))
+print("**** Total costs: ${:.2f} ****".format(all_costs))
 print()
 
 print()
