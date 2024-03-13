@@ -37,6 +37,7 @@ def yes_no(question):
 
         else:
             print("Please answer either yes or no...")
+            print()
 
 
 # checks that user response is not blank
@@ -135,6 +136,7 @@ def profit_goal(total_costs):
     while not valid:
 
         # ask for profit goal...
+        print()
         response = input("What is your profit goal (eg $500 or 50) ")
 
         # check if first character is $...
@@ -200,21 +202,22 @@ def round_up(amount, round_to):
 
 # Display instructions
 def show_instructions():
-    print('''\n
-    ***** Instructions *****
+    print('''
+***** Instructions *****
 
-    This program will ask you for...
-    - The name of hte product you are selling
-    - How many items you plan on selling
-    - The costs for each component of the product
-    - How much money you want to make
+This program will ask you for...
+- The name of hte product you are selling
+- How many items you plan on selling
+- The costs for each component of the product
+- How much money you want to make
 
-    It will then output an itemised list of the costs
-    with subtotals for the variable and fixed costs.
-    Finally it will tell you how mush you should sell
-    each item for to reach you profit gaol.
+It will then output an itemised list of the costs
+with subtotals for the variable and fixed costs.
+Finally it will tell you how mush you should sell
+each item for to reach you profit gaol.
 
-    The data will also be written to a text file which ''')
+The data will also be written to a text file which 
+''')
 
 
 # ******* main routine goes here *******
@@ -224,12 +227,10 @@ played_before = yes_no("Have you used this program before? ")
 
 if played_before == "no":
     show_instructions()
-print()
-
 print("***** Program Launched! *****")
 
-print()
 # Get user data
+print()
 product_name = not_blank("Product name: ", "The product name can't be blank.")
 
 how_many = num_check("How many items will you be producing? ",
@@ -238,13 +239,15 @@ how_many = num_check("How many items will you be producing? ",
 
 print()
 print("Please enter your variable costs below...")
+print("Enter 'xxx' for the item name when done.")
 # get variable costs
 variable_expenses = get_expenses("variable")
 variable_frame = variable_expenses[0]
 variable_sub = variable_expenses[1]
 
 print()
-have_fixed = yes_no("Do you have fixed costs (y/n)? ")
+have_fixed = yes_no("Do you have fixed costs (y / n)? ")
+print("Enter 'xxx' for the item name when done.")
 if have_fixed == "yes":
     # Get fixed costs
     fixed_expenses = get_expenses("fixed")
@@ -269,27 +272,42 @@ round_to = num_check("Round to nearst...? $",
 selling_price = sales_needed / how_many
 print("Selling price (unrounded): "
       "${:.2f}".format(selling_price))
-
+print()
 recommended_price = round_up(selling_price, round_to)
+
+# **** Get current date for heading and filename ****
+# get today's date
+today = date.today()
+
+# Get day, month and year as individual strings
+day = today.strftime("%d")
+month = today.strftime("%m")
+year = today.strftime("%Y")
+
+filename = "MMF_{}_{}_{}".format(year, month, day)
 
 # ***** Printing Area *****
 
 print()
-print("***** Fund Raising - {} *****".format(product_name))
-print()
+print("***** Fund Raising - {} - ({}/{}/{}) *****".format(product_name, year, month, day))
+
 expense_print("Variable", variable_frame, variable_sub)
 
 if have_fixed == "yes":
     expense_print("Fixed", fixed_frame, fixed_sub)
+elif have_fixed == "no":
+    print()
+    print("**** No Fixed Costs ****")
 
 print()
 print("**** Total costs: ${:.2f} ****".format(all_costs))
-print()
 
 print()
-print("**** Profit & Sales Target: ${:.2f}".format(profit_target))
+print("**** Profit & Sales Target ****")
 print("Profit Target: ${:.2f}".format(profit_target))
 print("Total Sales: ${:.2f}".format(all_costs + profit_target))
 
 print()
-print("**** Recommended Selling Price: ${:.2f}".format(selling_price))
+print("**** Pricing ****")
+print("Minimum Price: ${:.2f}".format(selling_price))
+print("Recommended Price: ${:.2f}".format(recommended_price))
