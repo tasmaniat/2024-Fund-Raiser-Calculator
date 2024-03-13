@@ -119,13 +119,12 @@ def get_expenses(var_fixed):
     return [expense_frame, sub_total]
 
 
-def expense_print(heading, frame, subtotal):
-    print()
-    print("**** {} Costs ****".format(heading))
-    print(frame)
-    print()
-    print("{} Costs: ${:.2f}".format(heading, subtotal))
-    return ""
+def expense_string(heading, frame, subtotal):
+    expense_heading = "**** {} Costs ****".format(heading)
+    expense_frame_txt = pandas.DataFrame.to_string(frame)
+    expense_sub_txt = "\n{} Costs: ${:.2f}".format(heading, subtotal)
+
+    return expense_heading, expense_frame_txt, expense_sub_txt
 
 
 # work out profit goal and total sales required
@@ -289,25 +288,55 @@ filename = "MMF_{}_{}_{}".format(year, month, day)
 # ***** Printing Area *****
 
 print()
-print("***** Fund Raising - {} - ({}/{}/{}) *****".format(product_name, year, month, day))
+product_heading = "***** Fund Raising - {} - ({}/{}/{}) *****".format(product_name, year, month, day)
 
-expense_print("Variable", variable_frame, variable_sub)
+variable_strings = expense_string("Variable", variable_frame, variable_sub)
+variable_heading = variable_strings[0]
+variable_frame_txt = variable_strings[1]
+variable_sub_txt = variable_strings[2]
 
 if have_fixed == "yes":
-    expense_print("Fixed", fixed_frame, fixed_sub)
-elif have_fixed == "no":
+    fixed_strings = expense_string("Fixed", fixed_frame, fixed_sub)
+    fixed_heading = fixed_strings[0]
+    fixed_frame_txt = fixed_strings[1]
+    fixed_sub_txt = fixed_strings[2]
+
+else:
+    fixed_heading = ""
+    fixed_frame_txt = ""
+    fixed_sub_txt = ""
+
+# print()
+# print("**** Total costs: ${:.2f} ****".format(all_costs))
+#
+# print()
+# print("**** Profit & Sales Target ****")
+# print("Profit Target: ${:.2f}".format(profit_target))
+# print("Total Sales: ${:.2f}".format(all_costs + profit_target))
+#
+# print()
+# print("**** Pricing ****")
+# print("Minimum Price: ${:.2f}".format(selling_price))
+# print("Recommended Price: ${:.2f}".format(recommended_price))
+
+# list holding stuff to print / write to file
+to_write = [product_heading, variable_heading, variable_frame_txt, variable_sub_txt,
+            fixed_heading, fixed_frame_txt, fixed_sub_txt]
+
+# write to file...
+# create file to hold data (add .txt extension)
+file_name = "{}.txt".format(product_name)
+text_file = open(file_name, "w+")
+
+# heading
+for item in to_write:
+    text_file.write(item)
+    text_file.write("\n\n")
+
+# close file
+text_file.close()
+
+# Print Stuff
+for item in to_write:
+    print(item)
     print()
-    print("**** No Fixed Costs ****")
-
-print()
-print("**** Total costs: ${:.2f} ****".format(all_costs))
-
-print()
-print("**** Profit & Sales Target ****")
-print("Profit Target: ${:.2f}".format(profit_target))
-print("Total Sales: ${:.2f}".format(all_costs + profit_target))
-
-print()
-print("**** Pricing ****")
-print("Minimum Price: ${:.2f}".format(selling_price))
-print("Recommended Price: ${:.2f}".format(recommended_price))
