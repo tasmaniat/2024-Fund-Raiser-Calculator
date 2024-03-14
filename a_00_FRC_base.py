@@ -260,6 +260,7 @@ else:
 all_costs = variable_sub + fixed_sub
 profit_target = profit_goal(all_costs)
 
+
 # calculate total sales needed to reach goal
 sales_needed = all_costs + profit_target
 
@@ -306,6 +307,14 @@ else:
     fixed_frame_txt = ""
     fixed_sub_txt = ""
 
+profit_heading = "\n**** Profit & Sales Target ****"
+profit_frame_txt = "Profit Target: ${:.2f}".format(profit_target)
+profit_sub_txt = "Total Sales: ${:.2f}".format(all_costs + profit_target)
+
+price_heading = "**** Pricing ****"
+price_frame_txt = "Minimum Price: ${:.2f}".format(selling_price)
+price_sub_txt = "Recommended Price: ${:.2f}".format(recommended_price)
+
 # print()
 # print("**** Total costs: ${:.2f} ****".format(all_costs))
 #
@@ -321,7 +330,9 @@ else:
 
 # list holding stuff to print / write to file
 to_write = [product_heading, variable_heading, variable_frame_txt, variable_sub_txt,
-            fixed_heading, fixed_frame_txt, fixed_sub_txt]
+            fixed_heading, fixed_frame_txt, fixed_sub_txt,
+            profit_heading, profit_frame_txt, profit_sub_txt,
+            price_heading, price_frame_txt, price_sub_txt]
 
 # write to file...
 # create file to hold data (add .txt extension)
