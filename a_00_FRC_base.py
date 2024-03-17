@@ -247,6 +247,7 @@ variable_sub = variable_expenses[1]
 print()
 have_fixed = yes_no("Do you have fixed costs (y / n)? ")
 print("Enter 'xxx' for the item name when done.")
+
 if have_fixed == "yes":
     # Get fixed costs
     fixed_expenses = get_expenses("fixed")
@@ -270,7 +271,7 @@ round_to = num_check("Round to nearst...? $",
 
 # Calculate recommended price
 selling_price = sales_needed / how_many
-print("Selling price (unrounded): "
+print("Selling price (un-rounded): "
       "${:.2f}".format(selling_price))
 print()
 recommended_price = round_up(selling_price, round_to)
@@ -289,7 +290,7 @@ filename = "MMF_{}_{}_{}".format(year, month, day)
 # ***** Printing Area *****
 
 print()
-product_heading = "***** Fund Raising - {} - ({}/{}/{}) *****".format(product_name, year, month, day)
+product_heading = "***** Fund Raising - {} - ({}/{}/{}) *****\n".format(product_name, year, month, day)
 
 variable_strings = expense_string("Variable", variable_frame, variable_sub)
 variable_heading = variable_strings[0]
@@ -301,17 +302,18 @@ if have_fixed == "yes":
     fixed_heading = fixed_strings[0]
     fixed_frame_txt = fixed_strings[1]
     fixed_sub_txt = fixed_strings[2]
-
 else:
     fixed_heading = ""
-    fixed_frame_txt = ""
+    fixed_frame_txt = "**** no fixed cost ****"
     fixed_sub_txt = ""
+
+total_cost_heading = "**** Total costs: ${:.2f} ****".format(all_costs)
 
 profit_heading = "\n**** Profit & Sales Target ****"
 profit_frame_txt = "Profit Target: ${:.2f}".format(profit_target)
 profit_sub_txt = "Total Sales: ${:.2f}".format(all_costs + profit_target)
 
-price_heading = "**** Pricing ****"
+price_heading = "\n**** Pricing ****"
 price_frame_txt = "Minimum Price: ${:.2f}".format(selling_price)
 price_sub_txt = "Recommended Price: ${:.2f}".format(recommended_price)
 
@@ -330,7 +332,7 @@ price_sub_txt = "Recommended Price: ${:.2f}".format(recommended_price)
 
 # list holding stuff to print / write to file
 to_write = [product_heading, variable_heading, variable_frame_txt, variable_sub_txt,
-            fixed_heading, fixed_frame_txt, fixed_sub_txt,
+            fixed_heading, fixed_frame_txt, fixed_sub_txt, total_cost_heading,
             profit_heading, profit_frame_txt, profit_sub_txt,
             price_heading, price_frame_txt, price_sub_txt]
 
@@ -342,7 +344,7 @@ text_file = open(file_name, "w+")
 # heading
 for item in to_write:
     text_file.write(item)
-    text_file.write("\n\n")
+    text_file.write("\n")
 
 # close file
 text_file.close()
